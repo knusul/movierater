@@ -1,0 +1,23 @@
+ Movie: has a title, description and category
+
+- Movie should have all standard REST actions
+
+- Users should be able to rate movies (once they are logged in)
+
+- Rating is of the form 1 to 5 stars (as picture or icon please)
+
+- Users should be able to create/edit/delete/rate movies (once they are logged in)
+
+The starting page should be a list of all movies with full-text search with facets:
+
+- category (for example Action, Drama etc.)
+
+- average ratings (5 stars, 4 stars etc.)
+
+- A user should be able to filter the movies when he clicks on a facet
+
+- A user should be able to rate movies (without page reload)
+
+- Pagination with 10 movies per page
+
+The app should be built using Twitter-Bootstrap, BackboneJS, Rails, PostgreSQL.
