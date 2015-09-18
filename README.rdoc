@@ -1,0 +1,14 @@
+== movierater
+
+Movierater is a clone of imbd
+
+== Requirements
+* Ruby 2.0
+* Rails 4.2
+* Postgresql
+
+
+== Copyright
+
+Copyright (c) 2015 Jakub Nieznalski. See LICENSE for details.
+
