@@ -1,5 +1,6 @@
 class Movierater.Routers.MoviesRouter extends Backbone.Router
   initialize: (options) ->
+    options ||= []
     @movies = new Movierater.Collections.MoviesCollection()
     @movies.reset options.movies
 

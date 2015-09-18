@@ -1,8 +1,1 @@
 #movies
-
-:javascript
-  $(function() {
-    // Blog is the app name
-    window.router = new Movierater.Routers.MoviesRouter({movies: #{@movies.to_json.html_safe}});
-    Backbone.history.start();
-  });

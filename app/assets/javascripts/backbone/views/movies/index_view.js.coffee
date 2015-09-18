@@ -4,12 +4,16 @@ class Movierater.Views.Movies.IndexView extends Backbone.View
   template: JST["backbone/templates/movies/index"]
 
   initialize: () ->
+    @collection.fetch
+      reset: true
+    console.log @collection
     @collection.bind('reset', @addAll)
 
   addAll: () =>
     @collection.each(@addOne)
 
   addOne: (movie) =>
+    console.log movie
     view = new Movierater.Views.Movies.MovieView({model : movie})
     @$("tbody").append(view.render().el)
 

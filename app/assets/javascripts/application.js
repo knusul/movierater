@@ -19,4 +19,6 @@
 //= require backbone_rails_sync
 //= require backbone_datalink
 //= require backbone/movierater
+//= require backbone.marionette
+//= require init
 //= require_tree .
