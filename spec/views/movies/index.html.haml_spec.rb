@@ -14,9 +14,8 @@ RSpec.describe "movies/index", type: :view do
     ])
   end
 
-  it "renders a list of movies" do
+  it "renders anchor div for backbone application" do
     render
-    assert_select "tr>td", :text => "Title".to_s, :count => 2
-    assert_select "tr>td", :text => "Description".to_s, :count => 2
+    assert_select "#movies", :count => 1
   end
 end

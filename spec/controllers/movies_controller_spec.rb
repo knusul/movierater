@@ -3,11 +3,7 @@ require 'rails_helper'
 RSpec.describe MoviesController, type: :controller do
 
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
-
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {title: "Oh ho", description: "Super oh ho movie"}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -15,35 +11,26 @@ RSpec.describe MoviesController, type: :controller do
   # MoviesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  before(:each) do
+    user = double('user')
+    allow(request.env['warden']).to receive(:authenticate!) { user }
+    allow(controller).to receive(:current_user) { user }
+  end
+
   describe "GET #index" do
     it "assigns all movies as @movies" do
       movie = Movie.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:movies)).to eq([movie])
     end
-  end
 
-  describe "GET #show" do
-    it "assigns the requested movie as @movie" do
-      movie = Movie.create! valid_attributes
-      get :show, {:id => movie.to_param}, valid_session
-      expect(assigns(:movie)).to eq(movie)
+    it "requires authentication" do
+      allow(request.env['warden']).to receive(:authenticate!).
+        and_throw(:warden, {:scope => :user})
+      get :index, {}, valid_session
+      expect(response).to redirect_to(new_user_session_path)
     end
-  end
 
-  describe "GET #new" do
-    it "assigns a new movie as @movie" do
-      get :new, {}, valid_session
-      expect(assigns(:movie)).to be_a_new(Movie)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested movie as @movie" do
-      movie = Movie.create! valid_attributes
-      get :edit, {:id => movie.to_param}, valid_session
-      expect(assigns(:movie)).to eq(movie)
-    end
   end
 
   describe "POST #create" do
@@ -66,17 +53,6 @@ RSpec.describe MoviesController, type: :controller do
       end
     end
 
-    context "with invalid params" do
-      it "assigns a newly created but unsaved movie as @movie" do
-        post :create, {:movie => invalid_attributes}, valid_session
-        expect(assigns(:movie)).to be_a_new(Movie)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {:movie => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
-      end
-    end
   end
 
   describe "PUT #update" do
@@ -102,20 +78,6 @@ RSpec.describe MoviesController, type: :controller do
         movie = Movie.create! valid_attributes
         put :update, {:id => movie.to_param, :movie => valid_attributes}, valid_session
         expect(response).to redirect_to(movie)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the movie as @movie" do
-        movie = Movie.create! valid_attributes
-        put :update, {:id => movie.to_param, :movie => invalid_attributes}, valid_session
-        expect(assigns(:movie)).to eq(movie)
-      end
-
-      it "re-renders the 'edit' template" do
-        movie = Movie.create! valid_attributes
-        put :update, {:id => movie.to_param, :movie => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
       end
     end
   end
