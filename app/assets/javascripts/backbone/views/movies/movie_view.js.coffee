@@ -16,4 +16,7 @@ class Movierater.Views.Movies.MovieView extends Backbone.View
 
   render: ->
     @$el.html(@template(@model.toJSON() ))
+    @$el.find('.ratyrating').raty
+      path: 'assets/',
+      score: @model.get('rating')
     return this
