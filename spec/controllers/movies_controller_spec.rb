@@ -79,6 +79,13 @@ RSpec.describe MoviesController, type: :controller do
         put :update, {:id => movie.to_param, :movie => valid_attributes}, valid_session
         expect(response).to redirect_to(movie)
       end
+
+      it "updates rating for the movie" do
+        movie = Movie.create! valid_attributes
+        expect do
+          put :update, {:id => movie.to_param, :movie => valid_attributes.merge({rating: 12})}, valid_session
+        end.to change{Rating.count}.by(1)
+      end
     end
   end
 
