@@ -19,4 +19,6 @@ class Movierater.Views.Movies.MovieView extends Backbone.View
     @$el.find('.ratyrating').raty
       path: 'assets/',
       score: @model.get('rating')
+      click: (score, event)=>
+        @model.save("rating", score)
     return this
