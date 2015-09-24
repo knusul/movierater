@@ -24,8 +24,9 @@ describe "MovieView#render", ->
     callback = sinon.spy
     movie = new Movierater.Models.Movie
       id: 1
+    movie.url = "movie"
     mock = sinon.mock(movie)
     mock.expects('save').once
     view = new Movierater.Views.Movies.MovieView({model : movie})
-    $(view.render().el).find("img")[1].click()
+    $(view.render().el).find("div.ratyrating").find("img")[1].click()
     mock.verify()
