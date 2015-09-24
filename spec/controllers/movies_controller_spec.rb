@@ -40,6 +40,13 @@ RSpec.describe MoviesController, type: :controller do
         get :index, valid_session
         expect(assigns(:movies)).to eq([movie, movie2])
       end
+
+      it "returns all movies with empty filter" do
+        movie = create :movie, :category => 'drama'
+        movie2 = create :movie, :category => 'comedy'
+        get :index, category: ''
+        expect(assigns(:movies)).to eq([movie, movie2])
+      end
     end
 
     it "assigns all movies as @movies" do
