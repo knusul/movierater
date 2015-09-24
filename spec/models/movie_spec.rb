@@ -1,5 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Movie, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "should allow empty title and description"do
+    expect(build(:movie, title: "", description: "")).to be_valid
+  end
 end
