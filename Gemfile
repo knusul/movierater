@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby "2.1.3"
-gem 'rails_12factor'
+gem 'rails_12factor', group: :production
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
