@@ -27,6 +27,9 @@ class MoviesController < ApplicationController
   # PATCH/PUT /movies/1
   # PATCH/PUT /movies/1.json
   def update
+    rating = Rating.where(:user_id => current_user.id, :movie_id => @movie.id).first_or_initialize
+    rating.score = rating_params['rating']
+    rating.save
     respond_to do |format|
       if @movie.update(movie_params)
         format.html { redirect_to @movie, notice: 'Movie was successfully updated.' }
@@ -57,5 +60,9 @@ class MoviesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def movie_params
       params.require(:movie).permit(:title, :description)
+    end
+
+    def rating_params
+      params.require(:movie).permit(:rating)
     end
 end

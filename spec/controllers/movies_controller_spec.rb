@@ -2,20 +2,28 @@ require 'rails_helper'
 
 RSpec.describe MoviesController, type: :controller do
 
+  def sign_in(user)
+    allow(request.env['warden']).to receive(:authenticate!) { user }
+    allow(controller).to receive(:current_user) { user }
+  end
+
   let(:valid_attributes) {
     {title: "Oh ho", description: "Super oh ho movie"}
   }
+
+  let(:user) do
+    user = build :user
+  end
+
+  before(:each) do
+    sign_in(user)
+  end
+
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # MoviesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
-
-  before(:each) do
-    user = double('user')
-    allow(request.env['warden']).to receive(:authenticate!) { user }
-    allow(controller).to receive(:current_user) { user }
-  end
 
   describe "GET #index" do
     it "assigns all movies as @movies" do
@@ -60,7 +68,6 @@ RSpec.describe MoviesController, type: :controller do
       let(:new_attributes) {
         skip("Add a hash of attributes valid for your model")
       }
-
       it "updates the requested movie" do
         movie = Movie.create! valid_attributes
         put :update, {:id => movie.to_param, :movie => new_attributes}, valid_session
@@ -85,6 +92,13 @@ RSpec.describe MoviesController, type: :controller do
         expect do
           put :update, {:id => movie.to_param, :movie => valid_attributes.merge({rating: 12})}, valid_session
         end.to change{Rating.count}.by(1)
+      end
+
+      it "changes existing rating for the movie" do
+        movie = Movie.create! valid_attributes
+        movie.ratings.create :user => user, :score => 3
+        put :update, {:id => movie.to_param, :movie => valid_attributes.merge({rating: 5})}, valid_session
+        expect(movie.ratings.average(:score)).to eq 5
       end
     end
   end
