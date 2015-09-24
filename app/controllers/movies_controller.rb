@@ -5,7 +5,11 @@ class MoviesController < ApplicationController
   # GET /movies
   # GET /movies.json
   def index
-    @movies = Movie.all
+    if params['category']
+      @movies = Movie.where(:category => params['category']).all
+    else
+      @movies = Movie.all
+    end
   end
 
   # POST /movies
@@ -59,7 +63,7 @@ class MoviesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def movie_params
-      params.require(:movie).permit(:title, :description)
+      params.require(:movie).permit(:title, :description, :category)
     end
 
     def rating_params

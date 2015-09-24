@@ -26,6 +26,22 @@ RSpec.describe MoviesController, type: :controller do
   let(:valid_session) { {} }
 
   describe "GET #index" do
+    describe 'category filter' do
+      it "filters by category" do
+        movie = create :movie, :category => 'drama'
+        movie2 = create :movie, :category => 'comedy'
+        get :index, {category: 'drama'}, valid_session
+        expect(assigns(:movies)).to eq([movie])
+      end
+
+      it "returns all movies without filter" do
+        movie = create :movie, :category => 'drama'
+        movie2 = create :movie, :category => 'comedy'
+        get :index, valid_session
+        expect(assigns(:movies)).to eq([movie, movie2])
+      end
+    end
+
     it "assigns all movies as @movies" do
       movie = Movie.create! valid_attributes
       get :index, {}, valid_session
@@ -65,22 +81,6 @@ RSpec.describe MoviesController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-      it "updates the requested movie" do
-        movie = Movie.create! valid_attributes
-        put :update, {:id => movie.to_param, :movie => new_attributes}, valid_session
-        movie.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "assigns the requested movie as @movie" do
-        movie = Movie.create! valid_attributes
-        put :update, {:id => movie.to_param, :movie => valid_attributes}, valid_session
-        expect(assigns(:movie)).to eq(movie)
-      end
-
       it "redirects to the movie" do
         movie = Movie.create! valid_attributes
         put :update, {:id => movie.to_param, :movie => valid_attributes}, valid_session
@@ -106,6 +106,14 @@ RSpec.describe MoviesController, type: :controller do
   describe "DELETE #destroy" do
     it "destroys the requested movie" do
       movie = Movie.create! valid_attributes
+      expect {
+        delete :destroy, {:id => movie.to_param}, valid_session
+      }.to change(Movie, :count).by(-1)
+    end
+
+    it "destroys the requested movie and ratings" do
+      movie = Movie.create! valid_attributes
+      movie.ratings.create :score => 2, :user => user
       expect {
         delete :destroy, {:id => movie.to_param}, valid_session
       }.to change(Movie, :count).by(-1)
