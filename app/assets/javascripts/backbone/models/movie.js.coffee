@@ -4,6 +4,7 @@ class Movierater.Models.Movie extends Backbone.Model
   defaults:
     title: null
     description: null
+    category: null
     rating: 0
     totalRating: 0
 
