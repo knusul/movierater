@@ -21,4 +21,10 @@ class Movierater.Views.Movies.MovieView extends Backbone.View
       score: @model.get('rating')
       click: (score, event)=>
         @model.save("rating", score)
+        @model.fetch().then =>
+          @render()
+    @$el.find('.ratytotalrating').raty
+      path: 'assets/',
+      score: @model.get('totalRating')
+      readOnly: true
     return this
